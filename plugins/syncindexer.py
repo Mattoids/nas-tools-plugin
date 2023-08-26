@@ -1,6 +1,7 @@
 import os
 import importlib
 
+from config import Config
 from datetime import datetime
 from app.utils import RequestUtils
 from app.plugins.modules._base import _IPluginModule
@@ -206,7 +207,7 @@ class SyncIndexer(_IPluginModule):
             path = importlib.resources.files('web.backend')
             file = os.path.join(path, "user.sites.bin")
 
-            file_data = RequestUtils(timeout=5).get_res(url)
+            file_data = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
 
             if not file_data or not file_data.content:
                 return False, "源地址出错，请检查源是否可以正常打开"
