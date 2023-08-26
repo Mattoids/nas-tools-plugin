@@ -155,10 +155,10 @@ class SyncIndexer(_IPluginModule):
                 }
               }
               
-              // $(function(){
-              //       $('#syncindexer_url').val(url);
-              //       $('#syncindexer_url').prop("readonly", true);
-              // });
+              $(function(){
+                    $('#syncindexer_url').val(url);
+                    $('#syncindexer_url').prop("readonly", true);
+              });
         """
 
     def init_config(self, config=None):
