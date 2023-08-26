@@ -24,44 +24,44 @@
 
 ### docker shell（容器内部执行）
 ~~~shell
-bash <(curl -s https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/install.sh) dockershell
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dockershell
 ~~~
 
 ### docker（容器外部执行）
 ~~~shell
-bash <(curl -s https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/install.sh) docker
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) docker
 ~~~
 
 ### dsm7
 ~~~shell
-bash <(curl -s https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/install.sh) dsm7
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dsm7
 ~~~
 
 ### dsm6
 ~~~shell
-bash <(curl -s https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/install.sh) dsm6
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dsm6
 ~~~
 
 ### 脚本运行报错的时候尝试下面的命令
 ~~~
-curl -O https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/install.sh && chmod 655 install.sh && ./install.sh docker
+curl -O https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh && chmod 655 install.sh && ./install.sh docker
 ~~~
 
 ## 第三方源
 ~~~
-https://gitee.com/Mattoid/nas-tools-plugin/raw/master/source.json
+https://github.com/Mattoids/nas-tools-plugin/raw/master/source.json
 ~~~
 
 # 图文说明
 
 ### 第一步、打开第三方插件商店
-![打开第三方插件商店](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/1.png)
+![打开第三方插件商店](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/1.png)
 
 ### 第二步、进入商店设置页面
-![进入商店设置页面](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/2.png)
+![进入商店设置页面](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/2.png)
 
 ### 第三步、添加第三方插件源
-![添加第三方插件源](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/3.png)
+![添加第三方插件源](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/3.png)
 
 ```
 完成以上操作以后，关闭第三方插件页面，重新打开即可看到插件，安装即可
@@ -71,12 +71,12 @@ https://gitee.com/Mattoid/nas-tools-plugin/raw/master/source.json
 
 ### 添加站点规则
 ### `这里的【站点域名】需要和站点里的【站点地址】配置一致`
-![站点设置](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/site.png)
+![站点设置](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/site.png)
 ```
 填写 站点域名 + 原始域名
 站点索引规则 为空
 ```
-![替换旧的站点域名](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/indexer.png)
+![替换旧的站点域名](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/indexer.png)
 
 ### 打开 json 格式化网址
 <https://www.bejson.com/>
@@ -89,4 +89,4 @@ https://gitee.com/Mattoid/nas-tools-plugin/raw/master/source.json
 6. 保存
 7. 你可以去索引器里面找你的站点了
 ~~~
-![bejson](https://gitee.com/Mattoid/nas-tools-plugin/raw/master/images/bejson.png)
+![bejson](https://github.com/Mattoids/nas-tools-plugin/raw/master/images/bejson.png)
