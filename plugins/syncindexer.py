@@ -147,7 +147,7 @@ class SyncIndexer(_IPluginModule):
               // 同步方式切换
               function SyncIndexer_type_change(obj){
                 if ($(obj).val() == '0') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/jxxghp/MoviePilot/main/config/sites/user.sites.bin');
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/user.sites.bin');
                     $('#syncindexer_url').prop("readonly", false);
                 } else if ($(obj).val() == '1') {
                     $('#syncindexer_url').val('https://hhanclub.top/user.sites.bin');
@@ -159,7 +159,7 @@ class SyncIndexer(_IPluginModule):
               }
               
               $(function(){
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/jxxghp/MoviePilot/main/config/sites/user.sites.bin');
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/user.sites.bin');
                     $('#syncindexer_url').prop("readonly", true);
               });
         """
