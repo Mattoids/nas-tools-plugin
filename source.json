@@ -1,0 +1,101 @@
+{
+  	"Customindexer": {
+		"id": "Customindexer",
+		"name": "自定义索引器",
+		"desc": "用于自定义索引器规则，可达到支持更多站点的效果。",
+		"version": "1.3",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/customindexer.png",
+		"color": "#00ADEF",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/customindexer.py"
+	},
+	"Editsignin": {
+		"id": "Editsignin",
+		"name": "签到站点修改",
+		"desc": "用于解决特殊站点站点更换域名后无法签到的问题。",
+		"version": "1.1",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/editsignin.png",
+		"color": "bg-black",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/editsignin.py"
+	},
+	"Jackett": {
+		"id": "Jackett",
+		"name": "Jackett",
+		"desc": "让内荐索引器支持检索Jackett站点资源",
+		"version": "1.1",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/jackett.png",
+		"color": "#C90425",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/jackett.py"
+	},
+	"DoubanSync": {
+		"id": "DoubanSync",
+		"name": "DoubanSync",
+		"desc": "修复豆瓣想看全量同步失败的问题",
+		"version": "1.1",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/douban.png",
+		"color": "#05B711",
+		"author": "jxxghp",
+		"author_url": "https://github.com/jxxghp",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/doubansync.py"
+	},
+	"DailyLinkRunner": {
+		"id": "DailyLinkRunner",
+		"name": "每日定时链接访问器",
+		"desc": "每天在指定时间访问自定义链接",
+		"version": "1.2",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/link.png",
+		"color": "#C90425",
+		"author": "maxgt",
+		"author_url": "https://github.com/GTian28",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/dailylinkrunner.py"
+	},
+	"IYUUAutoSeedEnhance": {
+		"id": "IYUUAutoSeedEnhance",
+		"name": "IYUU自动辅种(增强版)",
+		"desc": "基于原版IYUU插件修改而来",
+		"version": "1.0",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/iyuu.png",
+		"color": "#F3B70B",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/iyuuautoseedenhance.py"
+	},
+	"CustomBrush": {
+		"id": "CustomBrush",
+		"name": "自定义刷流规则",
+		"desc": "用于给自定义索引器添加的站点刷流配置免费资源。",
+		"version": "1.0",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/brush.png",
+		"color": "#02C4E0",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/custombrush.py"
+	},
+	"Prowlarr": {
+		"id": "Prowlarr",
+		"name": "Prowlarr",
+		"desc": "让内荐索引器支持检索Prowlarr站点资源。",
+		"version": "1.1",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/prowlarr.png",
+		"color": "#02C4E0",
+		"author": "mattoid",
+		"author_url": "https://github.com/Mattoids",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/prowlarr.py"
+	},
+	"TorrentMark": {
+		"id": "TorrentMark",
+		"name": "种子标记",
+		"desc": "标记种子是否是PT。",
+		"version": "1.0",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/tag.png",
+		"color": "#4876b6",
+		"author": "hsuyelin",
+		"author_url": "https://github.com/hsuyelin",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/torrentmark.py"
+	}
+}
