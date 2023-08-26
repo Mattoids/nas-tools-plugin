@@ -165,11 +165,17 @@ class SyncIndexer(_IPluginModule):
     def init_config(self, config=None):
         # 读取配置
         if config:
-            print(config)
             self._enable = config.get("enable")
             self._sync_type = config.get("sync_type")
             self._url = config.get("url")
         if self._enable:
+            self._enable = False
+            self.update_config({
+                "url": self._url,
+                "sync_type": self._sync_type,
+                "enable": self._enable,
+            })
+
             self.__update_history(config)
 
     def get_state(self):
