@@ -7,6 +7,7 @@ from app.utils import RequestUtils
 from app.plugins.modules._base import _IPluginModule
 from jinja2 import Template
 
+
 class SyncIndexer(_IPluginModule):
     # 插件名称
     module_name = "同步索引规则"
@@ -17,7 +18,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.2"
+    module_version = "1.3"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -63,7 +64,8 @@ class SyncIndexer(_IPluginModule):
                                     'options': {
                                         '0': '回滚致原版',
                                         '1': '憨憨',
-                                        '2': '自定义'
+                                        '2': 'MoviePilot',
+                                        '3': '自定义'
                                     },
                                     'default': '0',
                                     'onchange': 'SyncIndexer_type_change(this)'
@@ -147,20 +149,22 @@ class SyncIndexer(_IPluginModule):
               // 同步方式切换
               function SyncIndexer_type_change(obj){
                 if ($(obj).val() == '0') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/user.sites.bin');
-                    $('#syncindexer_url').prop("readonly", false);
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/user.sites.bin');
+                    $('#syncindexer_url').prop("readonly", true);
                 } else if ($(obj).val() == '1') {
-                    $('#syncindexer_url').val('https://hhanclub.top/user.sites.bin');
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/hh.user.sites.bin');
+                    $('#syncindexer_url').prop("readonly", true);
+                } else if ($(obj).val() == '2') {
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/mp.user.sites.bin');
                     $('#syncindexer_url').prop("readonly", true);
                 } else {
                     $('#syncindexer_url').val('');
-                    $('#syncindexer_url').prop("readonly", true);
+                    $('#syncindexer_url').prop("readonly", false);
                 }
               }
-              
+
               $(function(){
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/user.sites.bin');
-                    $('#syncindexer_url').prop("readonly", true);
+                SyncIndexer_type_change($(obj).val())
               });
         """
 
