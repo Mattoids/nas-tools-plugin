@@ -18,7 +18,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.3"
+    module_version = "1.2"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -155,17 +155,13 @@ class SyncIndexer(_IPluginModule):
                     $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/hh.user.sites.bin');
                     $('#syncindexer_url').prop("readonly", true);
                 } else if ($(obj).val() == '2') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/mp.user.sites.bin');
+                    $('#syncindexer_url').val('https://raw.githubusercontent.com/jxxghp/MoviePilot/main/config/sites/user.sites.bin');
                     $('#syncindexer_url').prop("readonly", true);
                 } else {
                     $('#syncindexer_url').val('');
                     $('#syncindexer_url').prop("readonly", false);
                 }
               }
-
-              $(function(){
-                SyncIndexer_type_change($(obj).val())
-              });
         """
 
     def init_config(self, config=None):
