@@ -1,7 +1,7 @@
 # 第三方插件商店拓展包
 - 后续更新将通过系统内部的更新检测功能从 [mattoids/nas-tools](https://github.com/Mattoids/nas-tools) 仓库拉取
 - 该仓库后续仅提供插件安装和更新服务，不在提供系统级别的更新
-
+- 若该仓库无法正常拉取，可使用 [gitee](https://gitee.com/Mattoid/nas-tools-plugin) 仓库进行拉取
 
 ## 目录介绍
 ~~~
