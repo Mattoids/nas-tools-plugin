@@ -8,6 +8,7 @@ from app.plugins.modules._base import _IPluginModule
 from app.utils import RequestUtils, SchedulerUtils, StringUtils, JsonUtils
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.sites.sites import Sites
+from web.backend.user import User
 from jinja2 import Template
 
 
@@ -226,6 +227,10 @@ class SyncIndexer(_IPluginModule):
         return True
 
     def __update_indexer(self, site_url, site_domain):
+        if not self._refresh and not User().get_indexer(url=site_url):
+            self.__insert_history(site_domain, "indexer", False, "未开启刷新所有站点，本次不更新!")
+            return True
+
         url = f"{self._gitee_url if self._gitee_switch else self._github_url}/sites/{site_domain}.json"
 
         result = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
@@ -247,6 +252,10 @@ class SyncIndexer(_IPluginModule):
         return True
 
     def __update_brush(self, site_url, site_domain):
+        if not self._refresh and site_domain not in User().get_brush_conf():
+            self.__insert_history(site_domain, "brush", False, "未开启刷新所有站点，本次不更新!")
+            return True
+
         url = f"{self._gitee_url if self._gitee_switch else self._github_url}/sites/brush/{site_domain}.json"
 
         result = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
