@@ -101,8 +101,8 @@
 	"SyncIndexer": {
 		"id": "SyncIndexer",
 		"name": "同步索引规则",
-		"desc": "用于同步 MoviePilot 的规则文件，达到增强索引器的功能。(每次同步后重启 nas-tools 生效)",
-		"version": "1.3",
+		"desc": "可根据配置站点自动获取已适配的索引规则和刷流规则。可以配合 '自定义索引器' 和 '自定义刷流规则' 插件使用。",
+		"version": "1.4",
 		"icon": "https://github.com/Mattoids/nas-tools-plugin/raw/master/plugins/images/syncindexer.png",
 		"color": "#02C4E0",
 		"author": "Mattoids",

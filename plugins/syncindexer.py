@@ -1,10 +1,13 @@
-import os
-import importlib
+import json
+import pytz
 
 from config import Config
-from datetime import datetime
-from app.utils import RequestUtils
+from app.helper import DbHelper
+from datetime import datetime, timedelta
 from app.plugins.modules._base import _IPluginModule
+from app.utils import RequestUtils, SchedulerUtils, StringUtils, JsonUtils
+from apscheduler.schedulers.background import BackgroundScheduler
+from app.sites.sites import Sites
 from jinja2 import Template
 
 
@@ -12,13 +15,13 @@ class SyncIndexer(_IPluginModule):
     # 插件名称
     module_name = "同步索引规则"
     # 插件描述
-    module_desc = "用于同步 MoviePilot 的规则文件，达到增强索引器的功能。(每次同步后重启 nas-tools 生效)"
+    module_desc = "可根据配置站点自动获取已适配的索引规则和刷流规则。可以配合 '自定义索引器' 和 '自定义刷流规则' 插件使用。"
     # 插件图标
     module_icon = "syncindexer.png"
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.2"
+    module_version = "1.4"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -31,9 +34,15 @@ class SyncIndexer(_IPluginModule):
     auth_level = 1
 
     # 私有属性
+    _scheduler = None
+    _gitee_url = "https://gitee.com/Mattoid/nas-tools-plugin/raw/master"
+    _github_url = "https://github.com/Mattoids/nas-tools-plugin/raw/master"
+
     _enable = False
-    _sync_type = 0
-    _url = ""
+    _gitee_switch = 0
+    _refresh = False
+    _onlyonce = False
+    _cron = ""
 
     @staticmethod
     def get_fields():
@@ -47,46 +56,45 @@ class SyncIndexer(_IPluginModule):
                         {
                             'title': '开启自动同步',
                             'required': "required",
-                            'tooltip': '将从数据源处获取站点索引规则，对 user.sites.bin 文件进行修改',
+                            'tooltip': '开启同步后将会从作者github仓库中同步站点的索引数据和站点的刷流数据，达到支持更多的站点的目的。',
                             'type': 'switch',
                             'id': 'enable'
-                        }
-                    ],
-                    [
+                        },
                         {
-                            'title': '同步源',
+                            'title': '使用gitee仓库',
                             'required': "required",
-                            'tooltip': '选择使用一种同步源来同步 user.sites.bin 文件内容',
-                            'type': 'select',
-                            'content': [
-                                {
-                                    'id': 'sync_type',
-                                    'options': {
-                                        '0': '回滚致原版',
-                                        '1': '憨憨',
-                                        '2': 'MoviePilot',
-                                        '3': '自定义'
-                                    },
-                                    'default': '0',
-                                    'onchange': 'SyncIndexer_type_change(this)'
-                                }
-                            ]
+                            'tooltip': '如果因为网络原因无法使用github仓库同步的情况下，可以开启该选项从国内公开仓库获取数据。',
+                            'type': 'switch',
+                            'id': 'gitee_switch'
+                        },
+                        {
+                            'title': '刷新所有站点',
+                            'required': "required",
+                            'tooltip': '强制刷新所有站点将会清除同步历史，然后对现有配置的站点进行重新同步。',
+                            'type': 'switch',
+                            'id': 'refresh'
+                        },
+                        {
+                            'title': '立即运行一次',
+                            'required': "required",
+                            'tooltip': '开启将会直接运行一次同步任务，并且自动关闭该选项。',
+                            'type': 'switch',
+                            'id': 'onlyonce'
                         }
                     ],
                     [
                         {
-                            'title': '源地址',
-                            'required': False,
-                            'tooltip': '填写 user.sites.bin 文件的下载链接',
+                            'title': '同步周期',
+                            'required': "",
+                            'tooltip': '定时同步作者更新的站点索引和刷流信息',
                             'type': 'text',
-                            'readonly': True,
                             'content': [
                                 {
-                                    'id': 'url',
-                                    'placeholder': '',
+                                    'id': 'cron',
+                                    'placeholder': '0 0 0 ? *',
                                 }
                             ]
-                        }
+                        },
                     ]
                 ]
             }
@@ -103,7 +111,7 @@ class SyncIndexer(_IPluginModule):
             <table class="table table-vcenter card-table table-hover table-striped">
               <thead>
               <tr>
-                <th>序号</th>
+                <th>站点</th>
                 <th>同步类型</th>
                 <th>状态</th>
                 <th>描述</th>
@@ -113,9 +121,9 @@ class SyncIndexer(_IPluginModule):
               <tbody>
               {% if HistoryCount > 0 %}
                 {% for Item in SyncIndexerHistory %}
-                  <tr id="douban_history_{{ Item.id }}">
-                    <td class="w-5">
-                      {{ Item.id }}
+                  <tr id="douban_history_{{ Item.site }}">
+                    <td>
+                      <div>{{ Item.site }}</div>
                     </td>
                     <td>
                       <div>{{ Item.type }}</div>
@@ -145,85 +153,135 @@ class SyncIndexer(_IPluginModule):
 
     @staticmethod
     def get_script():
-        return """            
-              // 同步方式切换
-              function SyncIndexer_type_change(obj){
-                if ($(obj).val() == '0') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/user.sites.bin');
-                    $('#syncindexer_url').prop("readonly", true);
-                } else if ($(obj).val() == '1') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/sites/bin/hh.user.sites.bin');
-                    $('#syncindexer_url').prop("readonly", true);
-                } else if ($(obj).val() == '2') {
-                    $('#syncindexer_url').val('https://raw.githubusercontent.com/jxxghp/MoviePilot/main/config/sites/user.sites.bin');
-                    $('#syncindexer_url').prop("readonly", true);
-                } else {
-                    $('#syncindexer_url').val('');
-                    $('#syncindexer_url').prop("readonly", false);
-                }
-              }
-        """
+        pass
 
     def init_config(self, config=None):
         # 读取配置
         if config:
             self._enable = config.get("enable")
-            self._sync_type = config.get("sync_type")
-            self._url = config.get("url")
-        if self._enable:
-            self._enable = False
-            self.update_config({
-                "url": self._url,
-                "sync_type": self._sync_type,
-                "enable": self._enable,
-            })
+            self._gitee_switch = config.get("gitee_switch")
+            self._refresh = config.get("refresh")
+            self._onlyonce = config.get("onlyonce")
+            self._cron = config.get("cron")
 
-            self.__update_history(config)
+        if self._enable:
+            # 定时服务
+            self._scheduler = BackgroundScheduler(timezone=Config().get_timezone())
+
+            if self._onlyonce:
+                self._onlyonce = False
+                self.info(f"索引同步，立即运行一次")
+                self._scheduler.add_job(self.__update_site_indexer, 'date',
+                                        run_date=datetime.now(tz=pytz.timezone(Config().get_timezone())) + timedelta(
+                                            seconds=3))
+
+                self.update_config({
+                    "enable": self._enable,
+                    "gitee_switch": self._gitee_switch,
+                    "refresh": self._refresh,
+                    "onlyonce": self._onlyonce,
+                    "cron": self._cron
+                })
+
+            # 周期运行
+            if self._cron:
+                self.info(f"自动同步索引规则，周期：{self._cron}")
+                SchedulerUtils.start_job(scheduler=self._scheduler,
+                                         func=self.__update_site_indexer,
+                                         func_desc="同步索引推责",
+                                         cron=str(self._cron))
+
+            # 启动任务
+            if self._scheduler.get_jobs():
+                self._scheduler.print_jobs()
+                self._scheduler.start()
+
 
     def get_state(self):
-        return self._enable
+        return self._enable and self._cron
 
     def stop_service(self):
         """
         退出插件
         """
-        pass
+        try:
+            if self._scheduler:
+                self._scheduler.remove_all_jobs()
+                if self._scheduler.running:
+                    self._event.set()
+                    self._scheduler.shutdown()
+                    self._event.clear()
+                self._scheduler = None
+        except Exception as e:
+            print(str(e))
 
-    def __update_history(self, config=None):
-        """
-        插入历史记录
-        """
-        result, message = self.__update_user_sites_bin(config.get("url"))
+    def __update_site_indexer(self):
+        for site in Sites().get_sites():
+            site_url = site.get("signurl")
+            site_domain = StringUtils.get_url_domain(site_url)
 
-        id = len(self.get_history()) + 1 or 1
+            self.__update_indexer(site_url=site_url, site_domain=site_domain)
+            self.__update_brush(site_url=site_url, site_domain=site_domain)
 
+        return True
+
+    def __update_indexer(self, site_url, site_domain):
+        url = f"{self._gitee_url if self._gitee_switch else self._github_url}/sites/{site_domain}.json"
+
+        result = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
+
+        if result.status_code == 404:
+            self.__insert_history(site_domain, "indexer", False, "站点索引规则不存在，请联系作者进行适配!")
+            return False
+
+        if result.status_code == 200:
+            if not DbHelper().get_indexer_custom_site(site_url):
+                DbHelper().insert_indexer_custom_site(site_url, result.content)
+            elif self._refresh:
+                DbHelper().insert_indexer_custom_site(site_url, result.content)
+        else:
+            self.__insert_history(site_domain, "indexer", False, result.status_code)
+            return False
+
+        self.__insert_history(site_domain, "indexer", True, "成功")
+        return True
+
+    def __update_brush(self, site_url, site_domain):
+        url = f"{self._gitee_url if self._gitee_switch else self._github_url}/sites/brush/{site_domain}.json"
+
+        result = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
+
+        if result.status_code == 404:
+            self.__insert_history(site_domain, "brush", False, "站点刷流规则不存在，请联系作者进行适配!")
+            return False
+
+        if result.status_code == 200:
+            config = Config().get_config()
+            site_brush = json.loads(config['laboratory']['site_brush'] or "{}")
+            if site_domain not in site_brush:
+                site_brush[site_domain] = json.loads(result.content)
+            elif self._refresh:
+                site_brush[site_domain] = json.loads(result.content)
+
+            brush = json.dumps(JsonUtils.json_serializable(site_brush))
+            config['laboratory']['site_brush'] = brush
+            Config().save_config(config)
+
+            self.update_config({"site_brush": brush}, "CustomBrush")
+        else:
+            self.__insert_history(site_domain, "brush", False, result.status_code)
+            return False
+
+        self.__insert_history(site_domain, "brush", True, "成功")
+        return True
+
+    def __insert_history(self, site_url, type, status, message):
         value = {
-            "id": id,
-            "type": "MoviePilot" if config.get("sync_type") == 0 else "自定义",
-            "status": "成功" if result else "失败",
+            "site": site_url,
+            "type": type,
+            "status": "成功" if status else "失败",
             "message": message,
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
-
-        self.history(key=id, value=value)
-
-    def __update_user_sites_bin(self, url=None):
-        if not url:
-            return False, "url不存在"
-
-        try:
-            path = importlib.resources.files('web.backend')
-            file = os.path.join(path, "user.sites.bin")
-
-            file_data = RequestUtils(timeout=5, proxies=Config().get_proxies()).get_res(url)
-
-            if not file_data or not file_data.content:
-                return False, "源地址出错，请检查源是否可以正常打开"
-
-            open(file, "wb").write(file_data.content)
-
-        except Exception as err:
-            print(err)
-            return False, err
-
-        return True, "成功"
+        self.delete_history(site_url)
+        self.history(key=site_url, value=value)
