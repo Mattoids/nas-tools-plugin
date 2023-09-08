@@ -1,0 +1,1 @@
+{"FREE":["//h1[@id='top']/b/font[@class='free']"],"2XFREE":["//h1[@id='top']/b/font[@class='twoupfree']"],"HR":["//h1[@align='center']/img[@title='H&R']"],"PEER_COUNT":["//div[@id='peercount']/b[1]"]}
