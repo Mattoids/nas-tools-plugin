@@ -1,0 +1,1 @@
+{"FREE":["//h1[@id='top']/img[@class='pro_free']"],"2XFREE":[],"HR":["//b[contains(text(),'H&R:')]"],"PEER_COUNT":["//div[@id='peercount']/b[1]"]}
