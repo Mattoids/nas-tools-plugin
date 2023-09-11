@@ -24,7 +24,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.5"
+    module_version = "1.6"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -243,9 +243,9 @@ class SyncIndexer(_IPluginModule):
 
         if result.status_code == 200:
             if not DbHelper().get_indexer_custom_site(site_url):
-                DbHelper().insert_indexer_custom_site(site_url, result.content)
+                DbHelper().insert_indexer_custom_site(site_url, json.dumps(result.json()))
             elif self._refresh:
-                DbHelper().insert_indexer_custom_site(site_url, result.content)
+                DbHelper().insert_indexer_custom_site(site_url, json.dumps(result.json()))
         else:
             self.__insert_history(site_domain, "indexer", False, result.status_code)
             return False
