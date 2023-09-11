@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from app.plugins.modules._base import _IPluginModule
 from app.utils import RequestUtils, SchedulerUtils, StringUtils, JsonUtils
 from apscheduler.schedulers.background import BackgroundScheduler
+from app.utils.types import EventType
+from app.plugins import EventHandler
 from app.sites.sites import Sites
 from web.backend.user import User
 from jinja2 import Template
@@ -22,7 +24,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.4"
+    module_version = "1.5"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -294,3 +296,21 @@ class SyncIndexer(_IPluginModule):
         }
         self.delete_history(site_url)
         self.history(key=site_url, value=value)
+
+    @staticmethod
+    def get_command():
+        """
+        定义远程控制命令
+        :return: 命令关键字、事件、描述、附带数据
+        """
+        return {
+            "cmd": "/ptc",
+            "event": EventType.SiteEdit,
+            "desc": "同步站点信息",
+            "category": "站点",
+            "data": {}
+        }
+
+    @EventHandler.register(EventType.SiteEdit)
+    def sync_cookiecloud(self, event=None):
+        self.__update_site_indexer()

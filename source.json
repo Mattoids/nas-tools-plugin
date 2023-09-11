@@ -102,7 +102,7 @@
 		"id": "SyncIndexer",
 		"name": "同步索引规则",
 		"desc": "可根据配置站点自动获取已适配的索引规则和刷流规则。可以配合 '自定义索引器' 和 '自定义刷流规则' 插件使用。",
-		"version": "1.4",
+		"version": "1.5",
 		"icon": "https://github.com/Mattoids/nas-tools-plugin/raw/master/plugins/images/syncindexer.png",
 		"color": "#02C4E0",
 		"author": "Mattoids",
