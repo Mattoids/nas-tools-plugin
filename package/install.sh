@@ -141,6 +141,9 @@ dsm7_install() {
 	download_file
 	unzip_file
 
+  chmod -R 777 $KIT_PATH/config/plugins
+	chown -R NASTool:NASTool $KIT_PATH/config/plugins
+
 	# 检查套件版本
 	if [ -n $NASTOOL_VERSION ] && [ $NASTOOL_VERSION != $VERSION ]; then
 	  echo "套件版本不要符合安装要求，不支持安装！"
@@ -167,6 +170,9 @@ dsm6_install() {
 	# 下载并解压修复包
 	download_file
 	unzip_file
+
+  chmod -R 777 $KIT_PATH/config/plugins
+	chown -R NASTool:NASTool $KIT_PATH/config/plugins
 
 	# 检查套件版本
 	NASTOOL_VERSION=$(cat "$KIT_PATH/nas-tools/version.py" | awk '{ print $3 }' | sed "s/'//g" | sed 's/v//g')
