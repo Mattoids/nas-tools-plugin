@@ -34,7 +34,7 @@ unzip_file() {
 
 kit_unload() {
 	echo "开始卸载插件..."
-	cp -R $TMP_PATH/nas-tools/nas-tools $KIT_PATH
+	cp -R $TMP_PATH/nas-tools $KIT_PATH
 	chmod -R 777 $KIT_PATH/nas-tools
 	chown -R NASTool:NASTool $KIT_PATH/nas-tools
 	echo "插件卸载成功，请去套件中心重启套件！"
@@ -60,7 +60,7 @@ dockershell_unload() {
 	unzip_file
 
   echo "开始卸载插件..."
-	cp -R $TMP_PATH/nas-tools/nas-tools $KIT_PATH
+	cp -R $TMP_PATH/nas-tools $KIT_PATH
 	chmod -R 777 $KIT_PATH/nas-tools
   chown -R root:root $KIT_PATH/nas-tools
 	echo "插件卸载成功，请重启docker容器哦！"
@@ -105,7 +105,7 @@ docker_unload() {
 	for DOCKER_ID in ${WAIT_DOCKER_IDS[*]}
 	do
 		echo "容器：$DOCKER_ID 开始处理..."
-		docker cp -a "$TMP_PATH/nas-tools/nas-tools" $DOCKER_ID:/
+		docker cp -a "$TMP_PATH/nas-tools" $DOCKER_ID:/
 		echo "容器：$DOCKER_ID 重启中..."
 		docker stop $DOCKER_ID
 		echo "容器：$DOCKER_ID 正在启动..."
