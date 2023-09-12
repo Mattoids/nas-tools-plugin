@@ -59,11 +59,11 @@ dockershell_unload() {
 	download_file
 	unzip_file
 
-  echo "开始安装插件..."
+  echo "开始卸载插件..."
 	cp -R $TMP_PATH/nas-tools/nas-tools $KIT_PATH
 	chmod -R 777 $KIT_PATH/nas-tools
   chown -R root:root $KIT_PATH/nas-tools
-	echo "插件安装成功，请重启docker容器哦！"
+	echo "插件卸载成功，请重启docker容器哦！"
 }
 
 # 处理Docker
@@ -110,7 +110,7 @@ docker_unload() {
 		docker stop $DOCKER_ID
 		echo "容器：$DOCKER_ID 正在启动..."
 		docker start $DOCKER_ID
-		echo "容器：$DOCKER_ID 安装完成!"
+		echo "容器：$DOCKER_ID 卸载完成!"
 	done
 
 }
@@ -137,7 +137,7 @@ dsm7_install() {
 	chown -R NASTool:NASTool $KIT_PATH/config/plugins
 
 	# 检查套件版本
-	if [ -n $NASTOOL_VERSION ] then
+	if [ -n $NASTOOL_VERSION ]; then
 	  echo "套件版本不要符合安装要求，不支持安装！"
 		exit 1
 	fi
