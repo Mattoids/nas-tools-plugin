@@ -26,28 +26,49 @@
 
 ### docker shell（容器内部执行）
 ~~~shell
+# 安装
 bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dockershell
+
+# 卸载
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/unload.sh) dockershell
 ~~~
 
 ### docker（容器外部执行）
 ~~~shell
+# 安装
 bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) docker
+
+# 卸载
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/unload.sh) docker
 ~~~
 
 ### dsm7
 ~~~shell
+# 安装
 bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dsm7
+
+# 卸载
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/unload.sh) dsm7
 ~~~
 
 ### dsm6
 ~~~shell
+# 安装
 bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh) dsm6
+
+# 卸载
+bash <(curl -s https://github.com/Mattoids/nas-tools-plugin/raw/master/package/unload.sh) dsm6
 ~~~
 
 ### 脚本运行报错的时候尝试下面的命令
 ~~~
+# 安装
 curl -O https://github.com/Mattoids/nas-tools-plugin/raw/master/package/install.sh && chmod 655 install.sh && ./install.sh docker
+
+# 卸载
+curl -O https://github.com/Mattoids/nas-tools-plugin/raw/master/package/unload.sh && chmod 655 unload.sh && ./unload.sh docker
 ~~~
+
 
 ## 第三方源
 ~~~
