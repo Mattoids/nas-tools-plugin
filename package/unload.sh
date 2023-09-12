@@ -5,7 +5,7 @@ TMP_PATH=/tmp/nas-tools
 # 套件目录
 KIT_PATH=/var/packages/NASTool/target
 # 修复包的下载地址
-WODNLOAD_URL=https://gitee.com/Mattoid/nas-tools-plugin/raw/master/package/nas-tools.tar
+WODNLOAD_URL=https://gitee.com/Mattoid/nas-tools/raw/master/package/nas-tools.tar
 
 # 清理临时目录
 clone_tmp() {
@@ -19,29 +19,29 @@ download_file() {
 	mkdir -p $TMP_PATH
 	
 	echo "下载文件..."
-	curl -o "$TMP_PATH/nas-tools-plugin.tar" $WODNLOAD_URL
+	curl -o "$TMP_PATH/nas-tools.tar" $WODNLOAD_URL
 }
 
 # 解压文件
 unzip_file() {
     echo "解压文件到临时目录"
-	  tar -xf "$TMP_PATH/nas-tools-plugin.tar" -C $TMP_PATH
-    if [ ! -d "$TMP_PATH/nas-tools-plugin" ]; then
+	  tar -xf "$TMP_PATH/nas-tools.tar" -C $TMP_PATH
+    if [ ! -d "$TMP_PATH/nas-tools" ]; then
         echo "解压失败，终止任务！"
         exit 1
     fi
 }
 
-kit_install() {
-	echo "开始安装插件..."
-	cp -R $TMP_PATH/nas-tools-plugin/nas-tools $KIT_PATH
+kit_unload() {
+	echo "开始卸载插件..."
+	cp -R $TMP_PATH/nas-tools/nas-tools $KIT_PATH
 	chmod -R 777 $KIT_PATH/nas-tools
 	chown -R NASTool:NASTool $KIT_PATH/nas-tools
-	echo "插件安装成功，请去套件中心重启套件！"
+	echo "插件卸载成功，请去套件中心重启套件！"
 }
 
 # Docker容器内部处理
-dockershell_install() {
+dockershell_unload() {
   KIT_PATH=/
 
 	# 获取 nas-tools 的版本信息
@@ -60,14 +60,14 @@ dockershell_install() {
 	unzip_file
 
   echo "开始安装插件..."
-	cp -R $TMP_PATH/nas-tools-plugin/nas-tools $KIT_PATH
+	cp -R $TMP_PATH/nas-tools/nas-tools $KIT_PATH
 	chmod -R 777 $KIT_PATH/nas-tools
   chown -R root:root $KIT_PATH/nas-tools
 	echo "插件安装成功，请重启docker容器哦！"
 }
 
 # 处理Docker
-docker_install() {
+docker_unload() {
 	echo "开始处理 Docker 容器..."
 	WAIT_DOCKER_IDS=()
 	
@@ -105,7 +105,7 @@ docker_install() {
 	for DOCKER_ID in ${WAIT_DOCKER_IDS[*]}
 	do
 		echo "容器：$DOCKER_ID 开始处理..."
-		docker cp -a "$TMP_PATH/nas-tools-plugin/nas-tools" $DOCKER_ID:/
+		docker cp -a "$TMP_PATH/nas-tools/nas-tools" $DOCKER_ID:/
 		echo "容器：$DOCKER_ID 重启中..."
 		docker stop $DOCKER_ID
 		echo "容器：$DOCKER_ID 正在启动..."
@@ -142,10 +142,10 @@ dsm7_install() {
 		exit 1
 	fi
 
-	kit_install
+	kit_unload
 }
 
-dsm6_install() {
+dsm6_unload() {
     KIT_PATH=/var/packages/NASTool/target
 
 	# 获取 nas-tools 的版本信息
@@ -173,7 +173,7 @@ dsm6_install() {
 	    exit 1
 	fi
 
-  kit_install
+  kit_unload
 }
 
 
@@ -184,5 +184,5 @@ if [ -z "$1" ]; then
 fi
 
 # 开始执行脚本
-eval "$1_install"
+eval "$1_unload"
 clone_tmp
