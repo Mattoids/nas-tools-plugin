@@ -5,7 +5,7 @@ TMP_PATH=/tmp/nas-tools
 # 套件目录
 KIT_PATH=/var/packages/NASTool/target
 # 修复包的下载地址
-WODNLOAD_URL=https://raw.githubusercontent.com/Mattoids/nas-tools-plugin/master/package/nas-tools.tar
+WODNLOAD_URL=http://mattoid.cn:8888/?explorer/share/fileDownload&shareID=9piT2zLQ&path=%7BshareItemLink%3A9piT2zLQ%7D%2F&accessToken=3f4bGeyGxv294xCWaTU7C19TYPUJbLYY5AJRWnkBzNWv3fKTqxQ0eD-q1TJ-1WVAmVSVX9VlHzqVIMjUDA&download=1&_etag=1694594783-18872320
 
 # 清理临时目录
 clone_tmp() {
