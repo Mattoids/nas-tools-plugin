@@ -49,11 +49,6 @@ dockershell_unload() {
 		echo "未找到您的套件，请确认套件已正确安装在您的DSM系统中！"
 	    exit 1
 	fi
-	NASTOOL_VERSION=$(cat "/nas-tools/version.py" | awk '{ print $3 }' | sed "s/'//g" | sed 's/v//g')
-	if [ -z $NASTOOL_VERSION ]; then
-	    echo "未找到您的套件，请确认套件已正确安装在您的DSM系统中！"
-	    exit 1
-	fi
 
 	# 下载并解压修复包
 	download_file
