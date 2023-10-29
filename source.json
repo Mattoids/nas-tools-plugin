@@ -119,5 +119,16 @@
 		"author": "thsrite",
 		"author_url": "https://github.com/thsrite",
 		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/invitessignin.py"
+	},
+	"PersonMeta": {
+		"id": "PersonMeta",
+		"name": "演职人员刮削",
+		"desc": "刮削演职人员图片以及中文名称。",
+		"version": "1.0",
+		"icon": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/images/actor.png",
+		"color": "#E66E72",
+		"author": "jxxghp",
+		"author_url": "https://github.com/jxxghp",
+		"download_url": "https://gitee.com/Mattoid/nas-tools-plugin/raw/master/plugins/personmeta.py"
 	}
 }
