@@ -1,6 +1,7 @@
 import json
 import pytz
 
+from threading import Event
 from config import Config
 from app.helper import DbHelper
 from datetime import datetime, timedelta
@@ -24,7 +25,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.6"
+    module_version = "1.7"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -35,6 +36,8 @@ class SyncIndexer(_IPluginModule):
     module_order = 24
     # 可使用的用户级别
     auth_level = 1
+    # 退出事件
+    _event = Event()
 
     # 私有属性
     _scheduler = None
