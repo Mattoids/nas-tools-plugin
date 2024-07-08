@@ -16,7 +16,7 @@ class CustomBrush(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.0"
+    module_version = "1.1"
     # 插件作者
     module_author = "mattoid"
     # 作者主页

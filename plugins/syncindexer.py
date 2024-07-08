@@ -25,7 +25,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.7"
+    module_version = "1.8"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
