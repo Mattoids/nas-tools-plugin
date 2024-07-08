@@ -1,5 +1,6 @@
 import json
 
+import log
 from app.plugins import EventHandler
 from app.plugins.modules._base import _IPluginModule
 from app.utils.types import EventType
@@ -16,7 +17,7 @@ class CustomBrush(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.1"
+    module_version = "1.2"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -61,7 +62,7 @@ class CustomBrush(_IPluginModule):
         self._site_brush = self.get_config()
         # 读取配置
         if config:
-            self._site_brush = config.get("site_brush")
+            self._site_brush = config
             self.update_config(self._site_brush)
 
 

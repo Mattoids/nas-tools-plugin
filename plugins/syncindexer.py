@@ -2,6 +2,8 @@ import json
 import pytz
 
 from threading import Event
+
+import log
 from config import Config
 from app.helper import DbHelper
 from datetime import datetime, timedelta
@@ -25,7 +27,7 @@ class SyncIndexer(_IPluginModule):
     # 主题色
     module_color = "#02C4E0"
     # 插件版本
-    module_version = "1.9"
+    module_version = "1.9.1"
     # 插件作者
     module_author = "mattoid"
     # 作者主页
@@ -270,11 +272,11 @@ class SyncIndexer(_IPluginModule):
             return False
 
         if result.status_code == 200:
-            site_brush = json.loads(self.get_config("CustomBrush") or "{}")
+            site_brush = json.loads(json.dumps(self.get_config("CustomBrush") or {}))
             if site_domain not in site_brush:
-                site_brush[site_domain] = json.loads(json.loads(result.content))
+                site_brush[site_domain] = json.loads(result.content)
             elif self._refresh:
-                site_brush[site_domain] = json.loads(json.loads(result.content))
+                site_brush[site_domain] = json.loads(result.content)
 
             self.update_config(site_brush, "CustomBrush")
         else:
