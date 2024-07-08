@@ -58,7 +58,7 @@ class CustomBrush(_IPluginModule):
         ]
 
     def init_config(self, config=None):
-        _config = self.get_config()
+        self._site_brush = self.get_config()
         # 读取配置
         if config:
             self._site_brush = config.get("site_brush")
@@ -79,7 +79,7 @@ class CustomBrush(_IPluginModule):
         return self.init_config(self.get_config())
 
     def get_state(self):
-        return self._enable
+        return self._enable or self._site_brush
 
     def stop_service(self):
         """
