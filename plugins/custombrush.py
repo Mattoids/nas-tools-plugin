@@ -58,12 +58,11 @@ class CustomBrush(_IPluginModule):
         ]
 
     def init_config(self, config=None):
-        _config = Config().get_config()
+        _config = self.get_config()
         # 读取配置
         if config:
             self._site_brush = config.get("site_brush")
-            _config['laboratory']['site_brush'] = self._site_brush
-            Config().save_config(_config)
+            self.update_config(self._site_brush)
 
 
 

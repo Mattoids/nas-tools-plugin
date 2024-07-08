@@ -270,18 +270,13 @@ class SyncIndexer(_IPluginModule):
             return False
 
         if result.status_code == 200:
-            config = Config().get_config()
-            site_brush = json.loads(config['laboratory']['site_brush'] or "{}")
+            site_brush = json.loads(self.get_config("CustomBrush") or "{}")
             if site_domain not in site_brush:
                 site_brush[site_domain] = json.loads(result.content)
             elif self._refresh:
                 site_brush[site_domain] = json.loads(result.content)
 
-            brush = json.dumps(JsonUtils.json_serializable(site_brush))
-            config['laboratory']['site_brush'] = brush
-            Config().save_config(config)
-
-            self.update_config({"site_brush": brush}, "CustomBrush")
+            self.update_config(site_brush, "CustomBrush")
         else:
             self.__insert_history(site_domain, "brush", False, result.status_code)
             return False
